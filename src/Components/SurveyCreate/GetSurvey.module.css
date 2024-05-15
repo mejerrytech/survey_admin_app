@@ -1,0 +1,26 @@
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd; 
+  margin-left: 20px;
+}
+
+
+
+tr.question-group:first-child th,
+tr.question-group:first-child td {
+  border-top: 1px solid #ddd; 
+}
+
+
