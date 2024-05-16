@@ -3,6 +3,8 @@ import axios from "axios";
 import Swal from 'sweetalert2';
 import { useLocation } from "react-router-dom";
 import '../SurveyCreate/View.module.css'
+import { Accordion, AccordionItem } from 'react-bootstrap';
+
 
 function ViewSurvey() {
     const [surveys, setSurveys] = useState([]);
@@ -24,7 +26,7 @@ function ViewSurvey() {
             if (!token) {
                 throw new Error('Token not found in local storage');
             }
-            const response = await axios.get(`http://192.168.1.10:7500/api/survey/getsurvey?surveyKey=${surveyKey}`, {
+            const response = await axios.get(`http://192.168.1.7:7500/api/survey/getsurvey?surveyKey=${surveyKey}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setSurveys([response.data]);
@@ -51,9 +53,9 @@ function ViewSurvey() {
 
     return (
         <div className="table-container">
-            <h1>Surveys</h1>
+            <h1 style={{ marginLeft: '20px' }} >Surveys</h1>
             {loading ? (
-                <p>Loading...</p>
+                <p style={{ marginLeft: '20px' }}>Loading...</p>
             ) : surveys && surveys.length > 0 ? (
                 <table>
                     <thead>
@@ -67,26 +69,31 @@ function ViewSurvey() {
                     </thead>
                     <tbody>
                         {surveys.map((survey) => (
+
                             <tr key={survey.surveyKey}>
-                                <td>{survey.surveyKey}</td>
-                                <td>{survey.surveyName}</td>
-                                <td>{survey.surveyType}</td>
-                                <td>{survey.status}</td>
+                                <td className="align-top">{survey.surveyKey}</td>
+                                <td className="align-top">{survey.surveyName}</td>
+                                <td className="align-top">{survey.surveyType}</td>
+                                <td className="align-top">{survey.status}</td>
                                 <td>
-                                    <ul>
+                                    <Accordion>
                                         {survey.questions.map((question) => (
-                                            <li key={question.id}>
-                                                <p>{question.questionName}</p>
-                                                <ul>
-                                                    {question.answers.map((answer) => (
-                                                        <li key={answer.id}>{answer.answer}</li>
-                                                    ))}
-                                                </ul>
-                                            </li>
+                                            <AccordionItem key={question.id} eventKey={question.id}>
+                                                <Accordion.Header>{question.questionName}</Accordion.Header>
+                                                <Accordion.Body>
+                                                    <ul>
+                                                        {question.answers.map((answer) => (
+                                                            <li key={answer.id}>{answer.answer}</li>
+                                                        ))}
+                                                    </ul>
+                                                </Accordion.Body>
+                                            </AccordionItem>
                                         ))}
-                                    </ul>
+                                    </Accordion>
                                 </td>
                             </tr>
+
+
                         ))}
                     </tbody>
                 </table>
@@ -99,4 +106,5 @@ function ViewSurvey() {
 
 export default ViewSurvey;
 
-    
+
+

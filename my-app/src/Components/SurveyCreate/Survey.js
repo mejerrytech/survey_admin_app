@@ -71,7 +71,7 @@ function SurveyForm() {
                 surveyType: surveyType,
                 questions: questions,
             };
-            const response = await axios.post('http://192.168.1.10:7500/api/survey/createsurvey', surveyData, {
+            const response = await axios.post('http://192.168.1.7:7500/api/survey/createsurvey', surveyData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             console.log('Response:', response.data);
@@ -186,11 +186,3 @@ function SurveyForm() {
 }
 
 export default SurveyForm;
-
-
-
-
-
-
-
-

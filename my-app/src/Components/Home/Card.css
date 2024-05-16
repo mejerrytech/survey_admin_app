@@ -1,0 +1,47 @@
+.card-group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    flex: 1 0 200px;    
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card .styled-heading-box {
+    background-color: cadetblue;
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  
+  .card h5 {
+    margin: 0;
+  }
+  
+  .card p {
+    padding: 10px;
+    margin: 0;
+  }
+  
+  .card button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: cadetblue;
+    color: white;
+    cursor: pointer;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  
+  .card button:hover {
+    background-color: darkcyan;
+  }
+
+  

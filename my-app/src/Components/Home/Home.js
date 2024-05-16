@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./Card.css"
 
 
 const Card = () => {
@@ -17,7 +18,7 @@ const Card = () => {
 
         const fetchSurveyDetails = async () => {
             try {
-                const response = await axios.get('http://192.168.1.10:7500/api/survey/getDetailsSurveys');
+                const response = await axios.get('http://192.168.1.7:7500/api/survey/getDetailsSurveys');
                 console.log('Response:', response.data);
                 const { surveyCount, questionCount, answerCounts, userCounts } = response.data;
                 setSurveyDetails({ surveyCount, questionCount, answerCounts, userCounts });
@@ -75,4 +76,4 @@ const Card = () => {
     );
 };
 
-export default Card;
+export default Card;    

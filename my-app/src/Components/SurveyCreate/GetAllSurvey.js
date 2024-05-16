@@ -19,7 +19,7 @@ function SurveyGetForm() {
     const getSurveys = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://192.168.1.10:7500/api/survey/getallsurvey');
+            const response = await axios.get('http://192.168.1.7:7500/api/survey/getallsurvey');
             setSurveys(response.data.surveys);
             setDropdownOpen(new Array(response.data.surveys.length).fill(false));
             Swal.fire({
@@ -53,7 +53,7 @@ function SurveyGetForm() {
             if (!token) {
                 throw new Error('Token not found in local storage');
             }
-            const response = await axios.put(`http://192.168.1.10:7500/api/survey/updatesurvey/${id}`, { status: newStatus }, {
+            const response = await axios.put(`http://192.168.1.7:7500/api/survey/updatesurvey/${id}`, { status: newStatus }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             console.log('Response:', response.data);
@@ -82,50 +82,54 @@ function SurveyGetForm() {
     return (
         <div className={style.getSurvey}>
             <div className="table-container">
-                <h1>Surveys</h1>
-                {surveys.length > 0 && (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Survey Key</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Number of Questions</th>
-                                <th>Actions</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {surveys.map((survey, index) => (
-                                <tr key={survey.surveyKey}>
-                                    <td>{survey.surveyKey}</td>
-                                    <td>{survey.surveyName}</td>
-                                    <td>{survey.surveyType}</td>
-                                    <td>{survey.status}</td>
-                                    <td>{survey.questions.length}</td>
-                                    <td>
-                                        <div className="dropdown">
-                                            <button className="dropbtn" onClick={() => {
-                                                const newDropdownOpen = [...dropdownOpen];
-                                                newDropdownOpen[index] = !newDropdownOpen[index];
-                                                setDropdownOpen(newDropdownOpen);
-                                            }}>...</button>
-                                            {dropdownOpen[index] && (
-                                                <ul className="dropdown-content">
-                                                    <li onClick={() => handleStatusChange(survey.id, 'active', index)}>active</li>
-                                                    <li onClick={() => handleStatusChange(survey.id, 'deleted', index)}>deleted</li>
-                                                </ul>
-                                            )}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <button onClick={() => handleViewSurvey(survey.surveyKey)}>View</button>
-                                    </td>
+                <h1 style={{ marginLeft: '20px' }}>Surveys</h1>
+                {loading ? (
+                    <p style={{ marginLeft: '20px' }}>Loading...</p>
+                ) : (
+                    surveys.length > 0 && (
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Survey Key</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Number of Questions</th>
+                                    <th>Actions</th>
+                                    <th></th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {surveys.map((survey, index) => (
+                                    <tr key={survey.surveyKey}>
+                                        <td>{survey.surveyKey}</td>
+                                        <td>{survey.surveyName}</td>
+                                        <td>{survey.surveyType}</td>
+                                        <td>{survey.status}</td>
+                                        <td>{survey.questions.length}</td>
+                                        <td>
+                                            <div className="dropdown">
+                                                <button className="dropbtn" onClick={() => {
+                                                    const newDropdownOpen = [...dropdownOpen];
+                                                    newDropdownOpen[index] = !newDropdownOpen[index];
+                                                    setDropdownOpen(newDropdownOpen);
+                                                }}>...</button>
+                                                {dropdownOpen[index] && (
+                                                    <ul className="dropdown-content">
+                                                        <li onClick={() => handleStatusChange(survey.id, 'active', index)}>active</li>
+                                                        <li onClick={() => handleStatusChange(survey.id, 'deleted', index)}>deleted</li>
+                                                    </ul>
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => handleViewSurvey(survey.surveyKey)}>View</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )
                 )}
             </div>
         </div>
@@ -133,3 +137,4 @@ function SurveyGetForm() {
 }
 
 export default SurveyGetForm;
+

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import basestyle from "../Base.module.css";
 import loginstyle from "./Login.module.css";
 import axios from "axios";
@@ -12,7 +12,14 @@ const Login = () => {
         email: "",
         password: "",
     });
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            navigate('/Home');
+        }
+    }, [navigate]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -26,9 +33,14 @@ const Login = () => {
         event.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post('http://192.168.1.10:7500/api/auths/login', user);
-            console.log('Response:', response.data);
-            navigate('/Navbar');
+            const response = await axios.post('http://192.168.1.7:7500/api/auths/login', user);
+            console.log('Response Data:', response.data);
+            const { token, id, name, email } = response.data;
+            localStorage.setItem('token', token);
+            localStorage.setItem('id', id);
+            if (name) localStorage.setItem('Name', name);
+            localStorage.setItem('Email', email);
+            navigate('/Home');
             Swal.fire({
                 icon: 'success',
                 title: 'Login successful',
@@ -39,18 +51,20 @@ const Login = () => {
             console.error('Error:', error.response ? error.response.data.error : error.message);
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',               
+                title: 'Oops...',
                 text: error.response ? error.response.data.error : error.message,
                 timer: 4000,
                 showConfirmButton: false,
                 position: 'top-center'
             });
         }
-        setLoading(false); 
+        setLoading(false)
     };
+    
+    
 
     return (
-        <div className={`${loginstyle.login} ${appStyle.App}`}> 
+        <div className={`${loginstyle.login} ${appStyle.App}`}>
             <form onSubmit={handleSubmit}>
                 <h1>Login</h1>
                 <input
@@ -69,8 +83,8 @@ const Login = () => {
                     onChange={handleChange}
                     value={user.password}
                 />
-                <button type="submit" className={basestyle.button_common}>
-                    {loading ? 'Loading...' : 'Login'} 
+                <button type="submit" className={basestyle.button_common} disabled={loading}>
+                    {loading ? 'Loading...' : 'Login'}
                 </button>
             </form>
         </div>
@@ -78,4 +92,5 @@ const Login = () => {
 };
 
 export default Login;
+
 
